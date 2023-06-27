@@ -1,0 +1,22 @@
+Chicos 
+
+ahi cargue un codigo de un programa que habia tratado de hacer 
+pero no me dejaba cambiar los grafos bipartitos 
+pero con este criterio nuevo creo que puede servir
+le faltaria cargar la matriz de adyacencia con las distancias 
+y crearle una condicion para que se cree un clasico
+tambien faltaria cargarle los datos de los equipos 
+(Marce ya se que habias empezado el codigo pero si te sirve eso joya jaja)
+
+
+Desp esta el pdf con la url de my maps con las ubicaciones reales de los estadios
+si alguien quiere meterle mano a eso para ponerlo en el PowerPoint joya
+
+el excel esta con los datos que se cargan en el mapa
+
+y desp esta el word con la presentacion del tema
+habria que cambiarlo y explicar el tema nuevo "determinar la localia para
+el clasico de la fecha a partir de la distancia recorrida hasta el momento"
+
+y si alguien se anima ir armando las diapo de lo que tenemos hsta ahora
+aunque sea solo los titulos y desp ponerle alguna imagen de lo que vayamos desarrollando
