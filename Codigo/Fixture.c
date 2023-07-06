@@ -73,7 +73,7 @@ int main() {
 void generarFixture(struct Equipo equipos[], struct Fixture fixtureOficial[19][10]) {
     
     //Fecha 1//
-    fixtureOficial[0][0].x = 17, fixtureOficial[0][0].y = 17;
+    fixtureOficial[0][0].x = 17, fixtureOficial[0][0].y = 14;
     fixtureOficial[0][1].x = 11, fixtureOficial[0][1].y = 1;
     fixtureOficial[0][2].x = 12, fixtureOficial[0][2].y = 8;
     fixtureOficial[0][3].x = 9, fixtureOficial[0][3].y = 5;
