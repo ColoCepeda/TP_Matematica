@@ -23,6 +23,7 @@ int mostrarMenu(struct Equipo equipos[], struct Fixture fixtureOficial[19][10], 
 int mostrarEquipos(struct Equipo equipos[]);
 int torneo(struct Equipo equipos[], struct Fixture fixtureOficial[19][10], int distancias[NUM_EQUIPOS][NUM_EQUIPOS]);
 int recorrido(struct Equipo equipos[], int opcion);
+int buscarParcial(char *cadena, char *busqueda);
 //-------------------------------------------------------------------------------------------------------------------------//
 int main()
 {
@@ -64,7 +65,10 @@ int main()
 //-------------------------------------------------------------------------------------------------------------------------//
 int mostrarMenu(struct Equipo equipos[], struct Fixture fixtureOficial[19][10], int distancias[NUM_EQUIPOS][NUM_EQUIPOS])
 {
-
+    char busqueda1[50];
+    char busqueda2[50];
+    int posicion1 = 0;
+    int posicion2 = 0;
     int opcion = 0;
     int boo = 0;
     printf("<-------------------------------> \n");
@@ -78,7 +82,8 @@ int mostrarMenu(struct Equipo equipos[], struct Fixture fixtureOficial[19][10], 
         printf("2- Comenzar recorrido del torneo\n");
         printf("3- Mostrar equipo con mayor distancia recorrida\n");
         printf("4- Mostrar equipo con menor distancia recorrida\n");
-        printf("5- Salir\n");
+        printf("5- Distancia entre equipos\n");
+        printf("6- Salir\n");
         scanf("%d", &opcion);
 
         switch (opcion)
@@ -94,7 +99,7 @@ int mostrarMenu(struct Equipo equipos[], struct Fixture fixtureOficial[19][10], 
             if (boo == 1)
             {
                 printf("<---------------------------------------------------------------------->\n");
-                printf("El equipo que recorrio la mayor distancio a lo largo del torneo es: %s\n", equipos[recorrido(equipos, opcion)].nombre);
+                printf("El equipo que recorrio la mayor distancio a lo largo del torneo es: %s, %d kms\n", equipos[recorrido(equipos, opcion)].nombre, equipos[recorrido(equipos, opcion)].distanciaRecorrida);
             }
             else
             {
@@ -105,7 +110,7 @@ int mostrarMenu(struct Equipo equipos[], struct Fixture fixtureOficial[19][10], 
             if (boo == 1)
             {
                 printf("<---------------------------------------------------------------------->\n");
-                printf("El equipo que recorrio la menor distancio a lo largo del torneo es: %s\n", equipos[recorrido(equipos, opcion)].nombre);
+                printf("El equipo que recorrio la menor distancio a lo largo del torneo es: %s, %d kms\n", equipos[recorrido(equipos, opcion)].nombre, equipos[recorrido(equipos, opcion)].distanciaRecorrida);
             }
             else
             {
@@ -113,16 +118,56 @@ int mostrarMenu(struct Equipo equipos[], struct Fixture fixtureOficial[19][10], 
             }
             break;
         case 5:
+            // Pedir al usuario que ingrese el nombre parcial
+            printf("Ingrese el nombre del primer equipo: \n");
+            scanf("%s", &busqueda1) ;// Eliminar el salto de línea de fgets
+
+            
+            printf("Segundo equipo: \n");
+            scanf("%s", &busqueda2) ;
+
+            // Buscar el nombre parcial en el array de nombres
+            int i;
+            int j;
+            int encontrados = 0;
+            for (i = 0; i < 19; i++)
+            {
+                posicion1 = buscarParcial(equipos[i].nombre, busqueda1);
+                if (posicion1 != -1){
+                    break;
+                }
+            }
+             for (j = 0; j < 19; j++)
+            {
+                posicion2 = buscarParcial(equipos[j].nombre, busqueda2);
+                if (posicion2 != -1){
+                    break;
+                }  
+            }
+             if (posicion1 != -1 & posicion2 != -1)
+                {
+                    printf("<---------------------------------------------------------------------->\n");
+                    printf("La distancia entre %s y %s es: %d kms\n", equipos[i].nombre, equipos[j].nombre, distancias[i][j]);
+                    encontrados++;
+                }
+
+            if (encontrados == 0)
+            {
+                printf("<---------------------------------------------------------------------->\n");
+                printf("No se encontro el equipo.\n");
+            }
+            break;
+        case 6:
+            printf("<---------------------------------------------------------------------->\n");
             printf("*****Gracias a todos!!*****\n");
             break;
         default:
             break;
         }
-        if (opcion == 5)
+        if (opcion == 6)
         {
             break;
         }
-        
     }
     return 0;
 }
@@ -142,12 +187,11 @@ int inicializarEquipos(struct Equipo equipos[])
         if (i % 2 == 0)
         {
             equipos[i].clasico = i;
-        }else
+        }
+        else
         {
             equipos[i].clasico = i - 1;
         }
-        
-        
     }
     return 0;
 }
@@ -196,7 +240,8 @@ int torneo(struct Equipo equipos[], struct Fixture fixtureOficial[19][10], int d
                     equipos[fixtureOficial[i][j].x].distanciaRecorrida += distancias[fixtureOficial[i][j].x][fixtureOficial[i][j].y];
                     printf("---%s suma %d kms de recorrido---\n", equipos[fixtureOficial[i][j].x].nombre, distancias[fixtureOficial[i][j].x][fixtureOficial[i][j].y]);
                 }
-            }else
+            }
+            else
             {
                 equipos[fixtureOficial[i][j].y].distanciaRecorrida += distancias[fixtureOficial[i][j].x][fixtureOficial[i][j].y];
                 printf("---%s suma %d kms de recorrido---\n", equipos[fixtureOficial[i][j].y].nombre, distancias[fixtureOficial[i][j].x][fixtureOficial[i][j].y]);
@@ -213,7 +258,7 @@ int recorrido(struct Equipo equipos[], int opcion)
 {
 
     int aux = 0;
-    int indice = 0; 
+    int indice = 0;
 
     if (opcion == 3)
     {
@@ -224,11 +269,10 @@ int recorrido(struct Equipo equipos[], int opcion)
                 aux = equipos[i].distanciaRecorrida;
                 indice = i;
             }
-            
         }
-        
-    }else
-    {  
+    }
+    else
+    {
         for (int i = 0; i < 19; i++)
         {
             if (aux > equipos[i].distanciaRecorrida)
@@ -236,10 +280,29 @@ int recorrido(struct Equipo equipos[], int opcion)
                 aux = equipos[i].distanciaRecorrida;
                 indice = i;
             }
-            
         }
     }
     return indice;
+}
+//-------------------------------------------------------------------------------------------------------------------------//
+int buscarParcial(char *cadena, char *busqueda)
+{
+    // Convertir ambas cadenas a minúsculas para hacer la búsqueda sin distinción de mayúsculas
+    strlwr(cadena);
+    strlwr(busqueda);
+
+    // Realizar la búsqueda parcial utilizando strstr()
+    char *encontrado = strstr(cadena, busqueda);
+    if (encontrado != NULL)
+    {
+        // Calcular la posición de la coincidencia parcial
+        int posicion = encontrado - cadena;
+        return posicion; // Devolver la posición encontrada
+    }
+    else
+    {
+        return -1; // No se encontró ninguna coincidencia parcial
+    }
 }
 //-------------------------------------------------------------------------------------------------------------------------//
 int generarFixture(struct Equipo equipos[], struct Fixture fixtureOficial[19][10])
